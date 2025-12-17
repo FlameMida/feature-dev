@@ -73,15 +73,15 @@ export EXA_API_KEY="your-exa-api-key"
 
 ```bash
 # 添加为 marketplace
-/plugin add-marketplace https://github.com/FlameMida/feature-dev-cn
+/plugin add-marketplace https://github.com/FlameMida/feature-dev
 
 # 安装插件
-/plugin install feature-dev-cn@FlameMida/feature-dev-cn
+/plugin install feature-dev@FlameMida/feature-dev
 ```
 
 ### 方式 2: 本地安装
 
-将此目录放置在 `~/.claude/plugins/repos/feature-dev-cn/`
+将此目录放置在 `~/.claude/plugins/repos/feature-dev/`
 
 ## 使用方法
 
@@ -133,7 +133,7 @@ export EXA_API_KEY="your-exa-api-key"
 ## 目录结构
 
 ```
-feature-dev-cn/
+feature-dev/
 ├── .claude-plugin/
 │   ├── plugin.json         # 插件元数据
 │   └── marketplace.json    # Marketplace 配置
@@ -149,7 +149,7 @@ feature-dev-cn/
 
 ## 与官方 feature-dev 的区别
 
-| 特性 | 官方 feature-dev | feature-dev-cn |
+| 特性 | 官方 feature-dev | feature-dev |
 |------|-----------------|----------------|
 | 语言 | 英文 | 中文 |
 | ultrathink | 无 | 融合 Sequential Thinking |
