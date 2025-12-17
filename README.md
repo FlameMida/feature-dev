@@ -104,23 +104,10 @@ export EXA_API_KEY="your-exa-api-key"
 - 配置建议和优化提示
 
 ### ⚠️ 关于 MCP 重复安装
-
-**v2.0.0 版本已移除插件内置的 `.mcp.json` 配置文件**，彻底避免了与用户全局配置的重复安装问题。
-
 如果您：
 - ✅ 已在全局配置中安装了这些 MCP - 完美，直接使用
 - ✅ 不想安装 MCP - 没问题，降级方案自动生效
 - ✅ 部分安装了 MCP - 已有的 MCP 会被使用，其他功能降级
-
-### 跨平台支持
-
-本插件 **100% 跨平台兼容**：
-- ✅ Windows（CMD、PowerShell、Git Bash）
-- ✅ macOS（Terminal、iTerm2）
-- ✅ Linux（所有主流终端）
-- ✅ WSL（Windows Subsystem for Linux）
-
-无需任何外部脚本依赖，纯 Claude Code 工具实现。
 
 ## 安装
 
