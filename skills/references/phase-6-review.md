@@ -1,0 +1,362 @@
+# 阶段 6: 质量审查 (Quality Review)
+
+## 目标
+
+通过并行代码审查确保代码质量，识别 bug、安全漏洞、代码质量问题和规范违反。
+
+---
+
+## 并行 Code-Reviewer Agents
+
+启动 **3 个 code-reviewer agents** 并行审查不同方面：
+
+### Reviewer 1: Bug 和逻辑错误
+
+```
+Task tool:
+- subagent_type: general-purpose
+- model: [从 agents/code-reviewer.md YAML 中读取]
+- prompt: "[code-reviewer.md 完整内容]
+
+审查焦点：Bug 和逻辑错误
+
+审查范围：
+[列出本次实施的所有文件路径]
+
+审查要点：
+1. 空指针引用
+2. 数组越界
+3. 资源泄漏（数据库连接、文件句柄等）
+4. 并发问题（竞态条件、死锁）
+5. 逻辑错误（条件判断、循环逻辑）
+6. 错误处理遗漏
+7. 边缘情况未处理
+8. 数据一致性问题
+
+请识别所有潜在的 bug 和逻辑错误，按置信度（0-100）排序。"
+
+- run_in_background: true
+```
+
+### Reviewer 2: 代码风格和质量
+
+```
+Task tool:
+- subagent_type: general-purpose
+- model: [从 agents/code-reviewer.md YAML 中读取]
+- prompt: "[code-reviewer.md 完整内容]
+
+审查焦点：代码风格和质量
+
+审查范围：
+[列出本次实施的所有文件路径]
+
+审查要点：
+1. 命名规范（变量、函数、类型）
+2. 代码重复（DRY 原则）
+3. 函数复杂度（是否过长、嵌套过深）
+4. 注释质量（是否清晰、是否必要）
+5. 代码可读性
+6. 性能问题（N+1 查询、不必要的循环等）
+7. 内存使用（不必要的分配、大对象）
+8. 错误消息质量
+
+请识别所有代码质量问题，按严重程度排序。"
+
+- run_in_background: true
+```
+
+### Reviewer 3: 项目规范遵循
+
+```
+Task tool:
+- subagent_type: general-purpose
+- model: [从 agents/code-reviewer.md YAML 中读取]
+- prompt: "[code-reviewer.md 完整内容]
+
+审查焦点：项目规范遵循
+
+CLAUDE.md 规范：
+[粘贴 CLAUDE.md 的关键规范]
+
+审查范围：
+[列出本次实施的所有文件路径]
+
+审查要点：
+1. 文件组织是否符合项目结构
+2. 命名是否符合项目约定
+3. API 设计是否符合规范
+4. 数据库设计是否符合规范
+5. 错误处理是否符合项目模式
+6. 日志记录是否符合项目格式
+7. 依赖注入是否符合项目模式
+8. 测试是否符合项目要求
+
+请识别所有规范违反，按严重程度排序。"
+
+- run_in_background: true
+```
+
+---
+
+## MCP 工具使用
+
+### 🔍 优先尝试：exa.web_search_exa
+
+**目的**：搜索已知安全漏洞和常见 bug 模式
+
+**示例查询**：
+```
+"SQL injection prevention Go GORM 2025 security best practices"
+"JWT security vulnerabilities common mistakes 2025"
+"Go concurrency common pitfalls race conditions"
+"XSS prevention techniques 2025"
+```
+
+**降级方案**：
+```
+WebSearch: [相同查询内容]
+```
+
+**使用场景**：
+- 审查安全相关代码时
+- 使用不熟悉的库时
+- 实施复杂功能时
+
+---
+
+## 汇总审查结果
+
+### 1. 收集 Reviewer 报告
+
+使用 TaskOutput 工具获取每个 reviewer 的输出：
+
+```
+TaskOutput: [reviewer-1-task-id]
+TaskOutput: [reviewer-2-task-id]
+TaskOutput: [reviewer-3-task-id]
+```
+
+### 2. 整合发现
+
+综合所有审查结果，按优先级分类：
+
+```markdown
+## 🔍 阶段 6: 质量审查
+
+### Bug 和逻辑错误
+
+#### 🔴 高置信度（≥80%）
+1. **空指针检查缺失** (置信度: 95%)
+   - 文件：services/dashboard_service.go:45
+   - 问题：未检查 dashboard 是否为 nil
+   - 修复：添加 nil 检查
+
+2. **并发问题** (置信度: 85%)
+   - 文件：services/cache_service.go:23
+   - 问题：map 并发读写未加锁
+   - 修复：使用 sync.RWMutex 或 sync.Map
+
+#### 🟡 中置信度（50-79%）
+3. **潜在资源泄漏** (置信度: 70%)
+   - 文件：controllers/export_controller.go:67
+   - 问题：文件可能未正确关闭
+   - 修复：使用 defer file.Close()
+
+### 代码质量问题
+
+#### 严重
+1. **代码重复**
+   - 文件：services/user_service.go, services/dashboard_service.go
+   - 问题：相同的权限检查逻辑重复了 5 次
+   - 建议：提取为公共函数
+
+2. **函数过长**
+   - 文件：controllers/dashboard_controller.go:123
+   - 问题：Update 函数 120 行，逻辑复杂
+   - 建议：拆分为多个辅助函数
+
+#### 一般
+3. **性能问题**
+   - 文件：services/dashboard_service.go:89
+   - 问题：N+1 查询问题
+   - 建议：使用 Preload 预加载关联数据
+
+4. **命名不清晰**
+   - 文件：dto/dashboard_dto.go:15
+   - 问题：变量名 tmp 不够描述性
+   - 建议：改为更具描述性的名称
+
+### 规范违反
+
+#### 严重
+1. **API 路径不符合规范**
+   - 文件：routes/api.go:45
+   - 问题：使用了 snake_case，项目规范要求 kebab-case
+   - 修复：/api/user_dashboards → /api/user-dashboards
+
+#### 一般
+2. **错误消息格式不统一**
+   - 文件：controllers/dashboard_controller.go
+   - 问题：部分使用英文，部分使用中文
+   - 修复：统一使用中文错误消息（根据 CLAUDE.md）
+
+3. **日志级别使用不当**
+   - 文件：services/notification_service.go:34
+   - 问题：业务逻辑使用了 ERROR 级别
+   - 修复：改为 WARN 或 INFO
+```
+
+---
+
+## 处理审查结果
+
+### 修复策略
+
+1. **高置信度 bug（≥80%）**：必须修复
+2. **中置信度 bug（50-79%）**：验证后修复
+3. **严重质量问题**：必须修复
+4. **一般质量问题**：视时间修复
+5. **严重规范违反**：必须修复
+6. **一般规范违反**：应该修复
+
+### 修复流程
+
+```
+对于每个需要修复的问题：
+1. 定位问题代码
+2. 理解问题根因
+3. 实施修复
+4. 验证修复效果
+5. 记录修复内容
+```
+
+### 修复记录
+
+```markdown
+### 修复记录
+
+#### 已修复
+1. ✅ **空指针检查缺失** (services/dashboard_service.go:45)
+   - 添加了 nil 检查
+   - 添加了相应的错误处理
+
+2. ✅ **并发问题** (services/cache_service.go:23)
+   - 将 map 改为 sync.Map
+   - 添加了并发测试
+
+3. ✅ **代码重复** (权限检查逻辑)
+   - 提取为 utils/auth.go 中的 CheckPermission 函数
+   - 更新了所有调用处
+
+4. ✅ **N+1 查询** (services/dashboard_service.go:89)
+   - 使用 Preload("Widgets") 预加载
+   - 性能提升约 80%
+
+5. ✅ **API 路径规范** (routes/api.go:45)
+   - 统一使用 kebab-case
+   - 更新了相关文档
+
+#### 暂不处理（含原因）
+1. ⏸️ **函数过长** (controllers/dashboard_controller.go:123)
+   - 原因：逻辑相对清晰，暂时可接受
+   - 建议：后续重构时优化
+
+2. ⏸️ **命名不清晰** (dto/dashboard_dto.go:15)
+   - 原因：该变量作用域很小，影响不大
+   - 建议：下次相关修改时改进
+```
+
+---
+
+## 安全检查清单
+
+在修复过程中，特别关注以下安全问题：
+
+### ✅ 输入验证
+- [ ] 所有用户输入都经过验证
+- [ ] 使用 binding tags 进行参数验证
+- [ ] 验证文件上传类型和大小
+- [ ] 验证 ID 和数值范围
+
+### ✅ 认证和授权
+- [ ] 所有需要认证的端点都添加了认证中间件
+- [ ] 正确验证了用户权限
+- [ ] 用户只能访问自己的资源
+
+### ✅ SQL 注入
+- [ ] 使用 ORM 参数化查询（不要拼接 SQL）
+- [ ] 不要使用原始 SQL（除非必要）
+
+### ✅ XSS
+- [ ] 前端正确转义用户输入
+- [ ] API 返回的 HTML 内容已转义
+
+### ✅ 敏感信息
+- [ ] 不在日志中记录密码、token
+- [ ] 不在响应中返回敏感字段
+- [ ] 使用环境变量存储敏感配置
+
+### ✅ 错误处理
+- [ ] 不在错误消息中暴露内部实现细节
+- [ ] 统一的错误响应格式
+- [ ] 正确的 HTTP 状态码
+
+---
+
+## 输出格式
+
+```markdown
+## 🔍 阶段 6: 质量审查
+
+### 审查统计
+- 审查文件数：X 个
+- 发现问题数：Y 个
+  - Bug 和逻辑错误：A 个
+  - 代码质量问题：B 个
+  - 规范违反：C 个
+
+### 问题详情
+[按照上面的格式列出]
+
+### 修复记录
+[列出已修复和暂不处理的问题]
+
+### 安全确认
+✅ 所有安全检查项已通过
+
+### 质量评分
+- 代码质量：A-/A/A+
+- 规范遵循：A-/A/A+
+- 安全性：A-/A/A+
+
+整体评分：A-/A/A+
+```
+
+---
+
+## 常见问题
+
+### Q: Reviewers 意见不一致怎么办？
+
+A: 以实际代码为准，必要时亲自审查相关代码。
+
+### Q: 发现的问题太多怎么办？
+
+A: 优先修复高置信度 bug 和严重规范违反，其他问题记录后续改进。
+
+### Q: 是否需要修复所有问题？
+
+A: 不一定。根据严重程度和影响范围决定。记录暂不处理的问题及原因。
+
+### Q: 审查阶段发现架构设计有问题怎么办？
+
+A: 与用户讨论，决定是否需要重构。重大问题建议修复后再继续。
+
+---
+
+## 进入下一阶段
+
+质量审查和修复完成后，进入 **阶段 7: 总结**。
+
+参见：[phase-7-summary.md](phase-7-summary.md)
