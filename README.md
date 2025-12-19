@@ -203,12 +203,6 @@ feat-dev/
 
 查看 [CHANGELOG.md](./CHANGELOG.md) 了解详细的版本更新历史。
 
-**最新版本**：v2.0.0 (2025-12-17)
-- 💥 移除插件内置 `.mcp.json`，彻底避免 MCP 重复安装
-- ✨ Skill 支持 MCP 智能降级（无 MCP 时自动使用备用方案）
-- ✨ 100% 跨平台兼容（Windows/macOS/Linux）
-- 🔧 移除 SessionStart hook，简化架构
-
 ## 许可证
 
 MIT License
