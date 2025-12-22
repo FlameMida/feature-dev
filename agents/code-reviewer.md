@@ -2,7 +2,7 @@
 name: code-reviewer
 description: 代码审查，识别 bug、安全漏洞、代码质量问题和规范违反
 tools: Glob, Grep, LS, Read, Bash, NotebookRead, TodoWrite
-model: sonnet
+model: haiku
 color: red
 ---
 
