@@ -14,7 +14,7 @@
 
 ```
 Task tool:
-- subagent_type: feat-dev:code-reviewer
+- subagent_type: spec-dev:code-reviewer
 - model: haiku
 - prompt: "审查焦点：Bug 和逻辑错误
 
@@ -40,7 +40,7 @@ Task tool:
 
 ```
 Task tool:
-- subagent_type: feat-dev:code-reviewer
+- subagent_type: spec-dev:code-reviewer
 - model: haiku
 - prompt: "审查焦点：代码风格和质量
 
@@ -66,7 +66,7 @@ Task tool:
 
 ```
 Task tool:
-- subagent_type: feat-dev:code-reviewer
+- subagent_type: spec-dev:code-reviewer
 - model: haiku
 - prompt: "审查焦点：项目规范遵循
 

@@ -39,7 +39,7 @@ Read: /path/to/project/CLAUDE.md
 
 ```
 Task tool:
-- subagent_type: feat-dev:code-explorer
+- subagent_type: spec-dev:code-explorer
 - model: haiku
 - prompt: "任务：探索与 [功能名称] 相关的实体定义和数据模型
 
@@ -64,7 +64,7 @@ Task tool:
 
 ```
 Task tool:
-- subagent_type: feat-dev:code-explorer
+- subagent_type: spec-dev:code-explorer
 - model: haiku
 - prompt: "任务：探索与 [功能名称] 相关的服务层实现和业务逻辑
 
@@ -89,7 +89,7 @@ Task tool:
 
 ```
 Task tool:
-- subagent_type: feat-dev:code-explorer
+- subagent_type: spec-dev:code-explorer
 - model: haiku
 - prompt: "任务：探索与 [功能名称] 相关的 API 端点和控制器
 

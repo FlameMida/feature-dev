@@ -162,7 +162,7 @@ WebSearch: "Next.js architecture guide official docs 2025"
 
 ```
 Task tool:
-- subagent_type: feat-dev:code-architect
+- subagent_type: spec-dev:code-architect
 - model: sonnet
 - prompt: "任务：为 [功能名称] 设计详细的架构蓝图
 

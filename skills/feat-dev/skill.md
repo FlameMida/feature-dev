@@ -142,21 +142,21 @@ description: 完整的 7 阶段功能开发工作流（需求理解、代码探�
    Task 1: 探索数据层
    - description: "探索数据层架构"
    - prompt: "分析数据层：实体、数据库模式、数据关联。返回5-10个关键文件路径。"
-   - subagent_type: "feat-dev:code-explorer"
+   - subagent_type: "spec-dev:code-explorer"
    - model: "haiku"
    - run_in_background: true
 
    Task 2: 探索业务逻辑层
    - description: "探索业务逻辑层架构"
    - prompt: "分析业务逻辑层：服务、Repository、业务流程。返回5-10个关键文件路径。"
-   - subagent_type: "feat-dev:code-explorer"
+   - subagent_type: "spec-dev:code-explorer"
    - model: "haiku"
    - run_in_background: true
 
    Task 3: 探索API层
    - description: "探索API层架构"
    - prompt: "分析API层：控制器、路由、请求处理。返回5-10个关键文件路径。"
-   - subagent_type: "feat-dev:code-explorer"
+   - subagent_type: "spec-dev:code-explorer"
    - model: "haiku"
    - run_in_background: true
 
@@ -224,7 +224,7 @@ description: 完整的 7 阶段功能开发工作流（需求理解、代码探�
 
    - description: "获取架构设计建议"
    - prompt: "基于以下需求和 ultrathink 分析结果，设计架构方案：[需求摘要]。返回5-10个关键架构参考文件和具体的架构设计建议。"
-   - subagent_type: "feat-dev:code-architect"
+   - subagent_type: "spec-dev:code-architect"
    - model: "sonnet"
    - run_in_background: false  # 单个 agent，阻塞等待结果
    ```
@@ -309,21 +309,21 @@ description: 完整的 7 阶段功能开发工作流（需求理解、代码探�
    Task 1: Bug 和逻辑错误审查
    - description: "审查Bug和逻辑错误"
    - prompt: "审查代码中的Bug、逻辑错误、空值处理等问题。返回问题列表，每个问题标注严重性（高/中/低）和置信度（0-100）。"
-   - subagent_type: "feat-dev:code-reviewer"
+   - subagent_type: "spec-dev:code-reviewer"
    - model: "haiku"
    - run_in_background: true
 
    Task 2: 代码风格和质量审查
    - description: "审查代码风格和质量"
    - prompt: "审查代码重复、函数复杂度、命名清晰度等质量问题。返回问题列表，每个问题标注严重性和置信度。"
-   - subagent_type: "feat-dev:code-reviewer"
+   - subagent_type: "spec-dev:code-reviewer"
    - model: "haiku"
    - run_in_background: true
 
    Task 3: 项目规范遵循审查
    - description: "审查项目规范遵循"
    - prompt: "审查是否遵循项目规范（CLAUDE.md等）、架构模式、命名约定等。返回问题列表，每个问题标注严重性和置信度。"
-   - subagent_type: "feat-dev:code-reviewer"
+   - subagent_type: "spec-dev:code-reviewer"
    - model: "haiku"
    - run_in_background: true
 
