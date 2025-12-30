@@ -79,7 +79,7 @@
 
 ## MCP 工具使用
 
-### 📚 优先尝试：context7.get-library-docs
+### 📚 优先尝试：context7.query-docs
 
 **目的**：实时查询 API 文档，确保使用最新语法
 
@@ -92,13 +92,13 @@
 **示例**：
 
 ```bash
-# 查询 ORM 的关联关系用法
-context7.resolve-library-id: "gorm"
-context7.get-library-docs: "/go-gorm/gorm" mode="code" topic="associations"
+# 查询 GORM 的关联关系用法
+context7.resolve-library-id: libraryName="gorm", query="需要了解 GORM 的关联关系用法"
+context7.query-docs: libraryId="/go-gorm/gorm", query="associations and relationship handling"
 
-# 查询 Web 框架 的验证规则
-context7.resolve-library-id: "gin"
-context7.get-library-docs: "/gin-gonic/gin" mode="code" topic="validation"
+# 查询 Gin 框架的验证规则
+context7.resolve-library-id: libraryName="gin", query="需要了解 Gin 框架的请求验证"
+context7.query-docs: libraryId="/gin-gonic/gin", query="request validation and binding"
 ```
 
 **降级方案**：

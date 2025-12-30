@@ -122,14 +122,14 @@ color: yellow
 ### MCP 工具增强
 
 当需要了解外部库/框架时，使用以下 MCP 工具：
-- **context7.get-library-docs**: 获取依赖库的最新 API 文档
+- **context7.query-docs**: 获取依赖库的最新 API 文档
 - **exa.get_code_context_exa**: 搜索特定库的代码示例
 
 **示例**：
 ```
 # 获取框架文档
-mcp__context7__resolve-library-id: libraryName="express"
-mcp__context7__get-library-docs: context7CompatibleLibraryID="/expressjs/express", topic="routing"
+mcp__context7__resolve-library-id: libraryName="express", query="需要了解 Express.js 的路由功能"
+mcp__context7__query-docs: libraryId="/expressjs/express", query="routing and middleware setup"
 
 # 搜索使用示例
 mcp__exa__get_code_context_exa: query="Express.js middleware pattern example"

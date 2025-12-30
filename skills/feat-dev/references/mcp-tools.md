@@ -29,9 +29,12 @@
 
 ```
 步骤 1: 使用 resolve-library-id 解析库名到 Context7 兼容的 ID
-步骤 2: 使用 get-library-docs 获取文档
-  - mode='code': API 参考和代码示例（默认）
-  - mode='info': 概念指南和架构信息
+  - libraryName: 库的名称（如 "express", "react", "next.js"）
+  - query: 用户的原始问题或任务（用于相关性排序）
+
+步骤 2: 使用 query-docs 查询文档
+  - libraryId: 从步骤1获取的库 ID
+  - query: 具体的查询问题
 ```
 
 #### 降级策略

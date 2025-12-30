@@ -237,12 +237,12 @@ Agent 4 - 配置和常量：
 
    **步骤 1**: 使用 `mcp__context7__resolve-library-id` 获取库 ID
    - 参数 `libraryName`: 库的名称（如 "express", "react", "next.js"）
+   - 参数 `query`: 用户的原始问题或任务（用于相关性排序）
    - 返回值：Context7 兼容的库 ID
 
-   **步骤 2**: 使用 `mcp__context7__get-library-docs` 获取文档
-   - 参数 `context7CompatibleLibraryID`: 从步骤1获取的库 ID
-   - 参数 `topic`: 关注的具体主题（如 "routing", "middleware", "hooks"）
-   - 参数 `mode`: "code" (获取 API 和代码示例) 或 "info" (获取概念说明)
+   **步骤 2**: 使用 `mcp__context7__query-docs` 获取文档
+   - 参数 `libraryId`: 从步骤1获取的库 ID
+   - 参数 `query`: 具体的查询问题（如 "how to set up routing", "middleware patterns", "hooks usage"）
 
 2. **降级到 WebSearch + Grep + Read**（如果 context7 不可用）：
 
@@ -264,8 +264,8 @@ Agent 4 - 配置和常量：
 场景：需要使用 Express.js 实现文件上传功能
 
 使用 context7:
-1. resolve-library-id: libraryName="express"
-2. get-library-docs: topic="file upload middleware", mode="code"
+1. resolve-library-id: libraryName="express", query="需要使用 Express.js 实现文件上传功能"
+2. query-docs: libraryId="/expressjs/express", query="file upload middleware setup and usage"
 
 降级方案（如果 context7 不可用）:
 1. WebSearch: "Express.js multer file upload official documentation 2025"
@@ -741,8 +741,8 @@ questions: [
 2. **阶段 2 - 代码库探索**：查找项目中是否已有 WebSocket 或实时通信相关代码
 3. **阶段 2.5 - 外部资源研究**：
    - 使用 context7 查询 Socket.io 最新文档：
-     - resolve-library-id: "socket.io"
-     - get-library-docs: topic="server setup and events", mode="code"
+     - resolve-library-id: libraryName="socket.io", query="使用 Socket.io 实现实时通知功能"
+     - query-docs: libraryId="/socket.io/socket.io", query="server setup and events handling"
    - 如果 context7 不可用，降级到 WebSearch 搜索官方文档
 4. **阶段 3 - 澄清问题**："需要支持哪些类型的通知？是否需要通知历史记录？"
 5. **阶段 4 - 深度分析**：基于 Socket.io 最新 API 设计实现方案

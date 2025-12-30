@@ -175,7 +175,7 @@ color: green
 
 架构设计时，使用以下 MCP 工具获取最新最佳实践：
 - **sequential-thinking**: 深度结构化思考，用于复杂架构分析
-- **context7.get-library-docs**: 获取框架的架构指南和设计模式文档
+- **context7.query-docs**: 获取框架的架构指南和设计模式文档
 - **exa.web_search_exa**: 搜索业界架构最佳实践和设计模式
 
 **示例**：
@@ -187,10 +187,13 @@ mcp__sequential-thinking__sequentialthinking:
   totalThoughts=5
 
 # 获取框架架构文档
-mcp__context7__get-library-docs:
-  context7CompatibleLibraryID="/nestjs/nest"
-  mode="info"
-  topic="architecture"
+mcp__context7__resolve-library-id:
+  libraryName="nestjs"
+  query="需要了解 NestJS 的架构设计指南"
+
+mcp__context7__query-docs:
+  libraryId="/nestjs/nest"
+  query="architecture patterns and design guidelines"
 
 # 搜索架构最佳实践
 mcp__exa__web_search_exa: query="Clean Architecture implementation patterns 2025"

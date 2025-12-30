@@ -82,13 +82,13 @@ Task:
 
 ## MCP 工具使用
 
-### 优先尝试:context7.get-library-docs
+### 优先尝试:context7.query-docs
 
 **目的**:获取项目依赖库的最新文档和 API 参考
 
 ```
-1. context7.resolve-library-id: "库名"
-2. context7.get-library-docs: "/库路径" mode='code/info'
+1. context7.resolve-library-id: libraryName="库名", query="用户的原始问题或任务"
+2. context7.query-docs: libraryId="/库路径", query="具体的查询问题"
 ```
 
 **降级方案**:WebSearch + Grep + Read

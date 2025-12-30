@@ -39,10 +39,11 @@
 **示例**：
 ```bash
 # 不够精确
-context7.get-library-docs: "gin"
+context7.query-docs: query="gin"
 
 # 更精确
-context7.get-library-docs: "/gin-gonic/gin" mode="code" topic="middleware authentication"
+context7.resolve-library-id: libraryName="gin", query="需要了解 Gin 框架的中间件认证功能"
+context7.query-docs: libraryId="/gin-gonic/gin", query="middleware authentication patterns"
 ```
 
 ---
